@@ -37,7 +37,7 @@ public class AvailableMove {
      * Draw function for the player class
      * @param canvas of this
      */
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas, float x, float y){
 
     }
 

@@ -118,7 +118,7 @@ public class CheckerBoard {
          * TODO: Add loop to draw all available moves at end of draw
          */
         for (AvailableMove space : availableMoves){
-            space.draw(canvas);
+            space.draw(canvas, marginX, marginY);
         }
 
     }
