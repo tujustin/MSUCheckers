@@ -17,6 +17,23 @@ public class CheckerBoard {
 
     public ArrayList<CheckerPiece> whitePieces = new ArrayList<CheckerPiece>();
     public ArrayList<CheckerPiece> greenPieces = new ArrayList<CheckerPiece>();
+
+    /**
+     * Construct Player 1 with name and assign color
+     */
+    Player playerOne = new Player(MainActivity.getPlayerOne(), "Green", greenPieces);
+
+    /**
+     * Construct Player 2 with name and assign color
+     */
+    Player playerTwo = new Player(MainActivity.getPlayerTwo(), "White", whitePieces);
+
+    /**
+     * Available moves for the current piece
+     */
+    public ArrayList<AvailableMove> availableMoves = new ArrayList<AvailableMove>();
+
+
     /**
      * Completed puzzle bitmap
      */
@@ -95,6 +112,13 @@ public class CheckerBoard {
         //draw all white checker pieces
         for(CheckerPiece piece : whitePieces) {
             piece.draw( canvas, marginX, marginY, puzzleSize, scaleFactor);
+        }
+
+        /**
+         * TODO: Add loop to draw all available moves at end of draw
+         */
+        for (AvailableMove space : availableMoves){
+            space.draw(canvas);
         }
 
     }

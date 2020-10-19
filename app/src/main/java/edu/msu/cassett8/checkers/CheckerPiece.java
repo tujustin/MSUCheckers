@@ -59,4 +59,13 @@ public class CheckerPiece {
         x= xCord;
         y= yCord;
     }
+
+    /**
+     * Hit test for the checker pieces when the users touch the screen
+     * @param xCord
+     * @param yCord
+     */
+    public void hitTest(float xCord, float yCord){
+
+    }
 }
