@@ -91,7 +91,7 @@ public class CheckerBoard {
         float scaleFactor = (float)puzzleSize / (float)boardImage.getWidth();
 
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        outlinePaint.setColor(0xff008000);
+        outlinePaint.setColor(0xFF504B);
         outlinePaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(marginX, marginY,
                 marginX + puzzleSize, marginY + puzzleSize, outlinePaint);
@@ -102,7 +102,6 @@ public class CheckerBoard {
         canvas.restore();
 
         
-
 
         //draw all green checker pieces
         for(CheckerPiece piece : greenPieces) {
@@ -118,8 +117,9 @@ public class CheckerBoard {
          * TODO: Add loop to draw all available moves at end of draw
          */
         for (AvailableMove space : availableMoves){
-            space.draw(canvas, marginX, marginY);
+            space.draw(canvas, marginX, marginY, puzzleSize, scaleFactor);
         }
+
 
     }
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 public class CheckerPiece {
 
@@ -52,6 +54,7 @@ public class CheckerPiece {
 
         // Draw the bitmap
         canvas.drawBitmap(piece, 0, 0, null);
+
         canvas.restore();
     }
 
@@ -67,5 +70,19 @@ public class CheckerPiece {
      */
     public void hitTest(float xCord, float yCord){
 
+    }
+    public float getX(){
+        return x;
+    }
+    public float getY(){
+        return y;
+    }
+    public float getWidth()
+    {
+        return piece.getWidth();
+    }
+    public float getHeight()
+    {
+        return piece.getHeight();
     }
 }
