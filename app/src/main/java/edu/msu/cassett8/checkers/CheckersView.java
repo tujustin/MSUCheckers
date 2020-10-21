@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -26,6 +27,11 @@ public class CheckersView extends View {
         init(null, 0);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return board.onTouchEvent(this, event);
+    }
+
     public CheckersView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
@@ -38,7 +44,7 @@ public class CheckersView extends View {
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
-        board = new CheckerBoard(getContext());
+        board = new CheckerBoard(getContext(), this);
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CheckersView, defStyle, 0);
 

@@ -5,18 +5,30 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class CheckerBoard {
 
-    int mPuzzleSize = -1;
     boolean initialized = false;
     final static float SCALE_IN_VIEW = .95f;
 
+    private int puzzleSize;
+    private int marginX;
+    private int marginY;
+    private float scaleFactor;
+    private View mCheckersView;
+    
+
     public ArrayList<CheckerPiece> whitePieces = new ArrayList<CheckerPiece>();
     public ArrayList<CheckerPiece> greenPieces = new ArrayList<CheckerPiece>();
+    /**
+     * Available moves for the current piece
+     */
+    public ArrayList<AvailableMove> availableMoves = new ArrayList<AvailableMove>();
 
     /**
      * Construct Player 1 with name and assign color
@@ -28,10 +40,6 @@ public class CheckerBoard {
      */
     Player playerTwo = new Player(MainActivity.getPlayerTwo(), "White", whitePieces);
 
-    /**
-     * Available moves for the current piece
-     */
-    public ArrayList<AvailableMove> availableMoves = new ArrayList<AvailableMove>();
 
 
     /**
@@ -41,7 +49,8 @@ public class CheckerBoard {
 
     private Paint outlinePaint;
 
-    public CheckerBoard(Context context){
+    public CheckerBoard(Context context, View theView){
+        mCheckersView = theView;
         boardImage = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.checkersboard);
 
@@ -76,19 +85,18 @@ public class CheckerBoard {
         // Determine the minimum of the two dimensions
         int minDim = wid < hit ? wid : hit;
 
-        int puzzleSize = (int)(minDim * SCALE_IN_VIEW);
+        puzzleSize = (int)(minDim * SCALE_IN_VIEW);
 
-        int mPuzzleSize = puzzleSize;
 
         // Compute the margins so we center the puzzle
-        int marginX = (wid - puzzleSize) / 2;
-        int marginY = (hit - puzzleSize) / 2;
+        marginX = (wid - puzzleSize) / 2;
+        marginY = (hit - puzzleSize) / 2;
 
         //
         // Draw the outline of the puzzle
         //
 
-        float scaleFactor = (float)puzzleSize / (float)boardImage.getWidth();
+        scaleFactor = (float)puzzleSize / (float)boardImage.getWidth();
 
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         outlinePaint.setColor(0xFF504B);
@@ -121,6 +129,52 @@ public class CheckerBoard {
         }
 
 
+    }
+
+    public boolean onTouchEvent(View view, MotionEvent event) {
+
+
+        float relX = (event.getX() - marginX) / puzzleSize;
+        float relY = (event.getY() - marginY) / puzzleSize;
+        switch (event.getActionMasked()) {
+
+            case MotionEvent.ACTION_DOWN:
+                return onTouched(relX, relY);
+        }
+        return false;
+    }
+    private boolean onTouched(float x, float y) {
+
+        // Check each piece to see if it has been hit
+        // We do this in reverse order so we find the pieces in front
+        for(int p=whitePieces.size()-1; p>=0;  p--) {
+            if(whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                // We hit a piece!
+                whitePieces.remove(p);
+                return true;
+            }
+        }
+
+        for(int p=greenPieces.size()-1; p>=0;  p--) {
+            if(greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                // We hit a piece!
+                return true;
+            }
+        }
+        for(int p=availableMoves.size()-1; p>=0;  p--) {
+            if(availableMoves.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                // We hit a piece!
+                for( p=availableMoves.size()-1; p>=0; p--)
+                {
+                    availableMoves.remove(p);
+                }
+                mCheckersView.invalidate();
+                return true;
+
+            }
+        }
+
+        return false;
     }
 
     public void setInitialPos(int wid, int hit)

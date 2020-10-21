@@ -65,11 +65,29 @@ public class CheckerPiece {
 
     /**
      * Hit test for the checker pieces when the users touch the screen
-     * @param xCord
-     * @param yCord
+     * @param testX
+     * @param testY
      */
-    public void hitTest(float xCord, float yCord){
+    public boolean hit(float testX, float testY,
+                       int puzzleSize, float scaleFactor) {
 
+        // Make relative to the location and size to the piece size
+        int pX = (int)((testX - x) * puzzleSize / scaleFactor) +
+                piece.getWidth() / 2;
+        int pY = (int)((testY - y) * puzzleSize / scaleFactor) +
+                piece.getHeight() / 2;
+
+        if(pX < 0 || pX >= piece.getWidth() ||
+                pY < 0 || pY >= piece.getHeight()) {
+            return false;
+        }
+
+        // We are within the rectangle of the piece.
+        // Are we touching actual picture?
+        return (piece.getPixel(pX, pY) & 0xff000000) != 0;
+    }
+    public Bitmap getPiece(){
+        return piece;
     }
     public float getX(){
         return x;
