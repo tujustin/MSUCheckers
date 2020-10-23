@@ -21,7 +21,7 @@ public class CheckerBoard {
     private int marginY;
     private float scaleFactor;
     private View mCheckersView;
-    
+
 
     public ArrayList<CheckerPiece> whitePieces = new ArrayList<CheckerPiece>();
     public ArrayList<CheckerPiece> greenPieces = new ArrayList<CheckerPiece>();
