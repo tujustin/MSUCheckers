@@ -25,6 +25,8 @@ public class CheckerPiece {
 
     private int mNum; //number identifier for checker piece
 
+
+
     public CheckerPiece(Context context, int id, int number) {
 
         //based on checkernumber
@@ -103,4 +105,5 @@ public class CheckerPiece {
     {
         return piece.getHeight();
     }
+
 }
