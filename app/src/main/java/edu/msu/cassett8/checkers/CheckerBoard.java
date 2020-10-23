@@ -40,6 +40,14 @@ public class CheckerBoard {
      */
     Player playerTwo = new Player(MainActivity.getPlayerTwo(), "White", whitePieces);
 
+    public float leftEdge = 0.07f;
+
+    public float rightEdge = 0.9f;
+
+    public float diff = 0.08f;
+
+
+
 
 
     /**
@@ -150,7 +158,8 @@ public class CheckerBoard {
         for(int p=whitePieces.size()-1; p>=0;  p--) {
             if(whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                 // We hit a piece!
-                whitePieces.remove(p);
+                findAvailableMoves(whitePieces.get(p), 0);
+                //whitePieces.remove(p);
                 return true;
             }
         }
@@ -158,6 +167,7 @@ public class CheckerBoard {
         for(int p=greenPieces.size()-1; p>=0;  p--) {
             if(greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                 // We hit a piece!
+                findAvailableMoves(greenPieces.get(p), 1);
                 return true;
             }
         }
@@ -175,6 +185,140 @@ public class CheckerBoard {
         }
 
         return false;
+    }
+
+    public boolean isLeftEdge(float x) {
+        if(Math.abs(leftEdge - x ) < diff)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public boolean isRightEdge(float x) {
+        if(Math.abs(rightEdge - x) < diff)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isJumpable(float x, float y) {
+        for(int p=whitePieces.size()-1; p>=0;  p--) {
+            if(whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                // We hit a piece!
+                return true;
+            }
+        }
+
+        for(int p=greenPieces.size()-1; p>=0;  p--) {
+            if(greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                // We hit a piece!
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void findAvailableMoves(CheckerPiece piece , int type) {
+        availableMoves.clear();
+        if (type == 0) {
+            if (isJumpable(piece.getX() + .125f, piece.getY() + .125f) && isJumpable(piece.getX() - .125f, piece.getY() + .125f)) {
+                if (isJumpable(piece.getX() + .25f, piece.getY() + .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() + .25f,piece));
+                }
+                else if (isJumpable(piece.getX() - .25f, piece.getY() + .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() + .25f,piece));
+                }
+                else {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece));
+                }
+            }
+            else if (isJumpable(piece.getX() + .125f, piece.getY() + .125f)) {
+                if (!isJumpable(piece.getX() + .25f, piece.getY() + .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece));
+                }
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+            }
+            else if (isJumpable(piece.getX() - .125f, piece.getY() + .125f)) {
+                if (!isJumpable(piece.getX() - .25f, piece.getY() + .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece));
+                }
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+            }
+
+            else {
+                if (isLeftEdge(piece.getX())) {
+
+                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+
+                }
+                if (isRightEdge(piece.getX())) {
+
+                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+
+                }
+
+                if (!isRightEdge(piece.getX()) && !isLeftEdge(piece.getX())) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+                }
+            }
+
+        }
+
+        if (type == 1) {
+            if (isJumpable(piece.getX() + .125f, piece.getY() - .125f) && isJumpable(piece.getX() - .125f, piece.getY() - .125f)) {
+                if (isJumpable(piece.getX() + .25f, piece.getY() - .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() - .25f,piece));
+                }
+                else if (isJumpable(piece.getX() - .25f, piece.getY() - .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() - .25f,piece));
+                }
+                else {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece));
+                }
+            }
+            else if (isJumpable(piece.getX() + .125f, piece.getY() - .125f)) {
+                if (!isJumpable(piece.getX() + .25f, piece.getY() - .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece));
+                }
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
+            }
+            else if (isJumpable(piece.getX() - .125f, piece.getY() - .125f)) {
+                if (!isJumpable(piece.getX() - .25f, piece.getY() - .25f)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece));
+                }
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+            }
+
+            else {
+                if (isLeftEdge(piece.getX())) {
+
+                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+
+                }
+                if (isRightEdge(piece.getX())) {
+
+                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
+
+                }
+
+                if (!isRightEdge(piece.getX()) && !isLeftEdge(piece.getX())) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
+                }
+            }
+        }
+
+
+        mCheckersView.invalidate();
+
+
+
     }
 
     public void setInitialPos(int wid, int hit)
