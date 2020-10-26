@@ -70,38 +70,47 @@ public class CheckerBoard {
         bundle.putIntArray(White_IDs,  wids);
         bundle.putFloatArray(Green_Location, glocations);
         bundle.putIntArray(Green_IDs,  gids);
+        bundle.putInt("turn", turn);
+        bundle.putInt("winner", winner);
+        bundle.putBoolean("gameState", isEnd);
 
 
     }
     public void loadInstanceState(Bundle bundle, Context context) {
 
-        float [] wlocations = bundle.getFloatArray(White_Location);
-        int [] wids = bundle.getIntArray(White_IDs);
-        float [] glocations = bundle.getFloatArray(Green_Location);
-        int [] gids = bundle.getIntArray(Green_IDs);
+        if(bundle!=null) {
+            turn = bundle.getInt("turn");
+            winner = bundle.getInt("winner");
+            isEnd = bundle.getBoolean("gameState");
+            float[] wlocations = bundle.getFloatArray(White_Location);
+            int[] wids = bundle.getIntArray(White_IDs);
+            float[] glocations = bundle.getFloatArray(Green_Location);
+            int[] gids = bundle.getIntArray(Green_IDs);
 
-        ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
-        ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
+            ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
+            ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
 
-        if(gids != null) {
-            for (int i = 0; i < gids.length - 1; i++) {
+            if (gids != null) {
+                for (int i = 0; i < gids.length; i++) {
 
-                GreenChecker piece = new GreenChecker(context, R.drawable.spartan_green, gids[i]);
-                piece.setCords(glocations[i * 2], glocations[i * 2 + 1]);
-                greenPieces.add(piece);
+                    GreenChecker piece = new GreenChecker(context, R.drawable.spartan_green, gids[i]);
+                    piece.setCords(glocations[i * 2], glocations[i * 2 + 1]);
+                    greenPieces.add(piece);
+                }
+                this.greenPieces = greenPieces;
             }
-            this.greenPieces = greenPieces;
-        }
-        if(wids!=null) {
-            for (int i = 0; i < wids.length - 1; i++) {
+            if (wids != null) {
+                for (int i = 0; i < wids.length; i++) {
 
-                WhiteChecker piece = new WhiteChecker(context, R.drawable.spartan_green, gids[i]);
-                piece.setCords(wlocations[i * 2], wlocations[i * 2 + 1]);
-                whitePieces.add(piece);
+                    WhiteChecker piece = new WhiteChecker(context, R.drawable.spartan_white, gids[i]);
+                    piece.setCords(wlocations[i * 2], wlocations[i * 2 + 1]);
+                    whitePieces.add(piece);
+                }
+                this.whitePieces = whitePieces;
             }
-            this.whitePieces = whitePieces;
-        }
+            initialized=true;
 
+        }
 
     }
 

@@ -22,14 +22,8 @@ public class CheckerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkers_view);
 
-        playerView = (TextView)findViewById(R.id.playerView);
 
-        bundle = getIntent().getExtras();
-        Bundle bundle = getIntent().getExtras();
-        String pOne = bundle.getString("playerone");
-        String pTwo = bundle.getString("playertwo");
-
-        getCheckerView().loadInstanceState(bundle);
+        getCheckerView().loadInstanceState(savedInstanceState);
     }
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
