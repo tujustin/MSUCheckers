@@ -175,6 +175,10 @@ public class CheckerBoard {
 
     public void draw(Canvas canvas) {
 
+        if(isEnd = true)
+        {
+            return;
+        }
         int wid = canvas.getWidth();
         int hit = canvas.getHeight();
 
