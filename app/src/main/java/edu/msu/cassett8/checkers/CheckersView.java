@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -35,8 +36,15 @@ public class CheckersView extends View {
     public CheckersView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
+
     }
 
+    public void saveInstanceState(Bundle bundle) {
+        board.saveInstanceState(bundle);
+    }
+    public void loadInstanceState(Bundle bundle) {
+        board.loadInstanceState(bundle, getContext());
+    }
     public CheckersView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
@@ -47,6 +55,8 @@ public class CheckersView extends View {
         board = new CheckerBoard(getContext(), this);
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CheckersView, defStyle, 0);
+
+        setId(R.id.checkersView);
 
     }
 

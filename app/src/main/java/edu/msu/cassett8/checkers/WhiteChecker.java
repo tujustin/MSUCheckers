@@ -11,6 +11,12 @@ public class WhiteChecker extends CheckerPiece {
         super(context, id, number);
     }
 
+    @Override
+    public void AcceptVisitor(CheckerVisitor Visitor)
+    {
+        Visitor.visitedWhite();
+    }
+
 
 
 }

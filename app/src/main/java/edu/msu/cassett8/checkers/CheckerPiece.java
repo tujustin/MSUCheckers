@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import androidx.annotation.Nullable;
+
 public class CheckerPiece {
 
     private Bitmap piece;
@@ -65,6 +67,15 @@ public class CheckerPiece {
         y= yCord;
     }
 
+    public void AcceptVisitor(CheckerVisitor Visitor)
+    {
+        return;
+    }
+
+    public boolean equals(CheckerPiece obj) {
+        return (this.mNum == obj.getID());
+    }
+
     /**
      * Hit test for the checker pieces when the users touch the screen
      * @param testX
@@ -104,6 +115,11 @@ public class CheckerPiece {
     public float getHeight()
     {
         return piece.getHeight();
+    }
+
+    public int getID()
+    {
+        return mNum;
     }
 
 }

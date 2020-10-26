@@ -21,6 +21,8 @@ public class AvailableMove {
      */
     private CheckerPiece piece;
 
+    private CheckerPiece JumpedPiece = null;
+
     /**
      * Available moves for that current piece
      * @param x available move
@@ -36,6 +38,18 @@ public class AvailableMove {
         linePaint.setStrokeWidth(3);
 
     }
+
+    public AvailableMove(float x, float y, CheckerPiece piece, CheckerPiece jumpedPiece){
+        this.x = x;
+        this.y = y;
+        this.piece = piece;
+        linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        linePaint.setColor(0xFF504B);
+        linePaint.setStrokeWidth(3);
+        this.JumpedPiece = jumpedPiece;
+
+    }
+
 
     /**
      * Draw function for the player class
@@ -86,8 +100,13 @@ public class AvailableMove {
                 pY < 0 || pY >= piece.getPiece().getHeight()) {
             return false;
         }
-
         piece.setCords(x,y);
         return true;
+    }
+
+
+    public CheckerPiece getJumpedPiece()
+    {
+        return JumpedPiece;
     }
 }
