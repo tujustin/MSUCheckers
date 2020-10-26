@@ -25,7 +25,6 @@ public class CheckerActivity extends AppCompatActivity {
         String pOne = bundle.getString("playerone");
         String pTwo = bundle.getString("playertwo");
 
-        playerView.setText(pOne + " is Green. " + pTwo + " is White. " + "Green will go first.");
     }
 
     public void onEndGame(View view) {
