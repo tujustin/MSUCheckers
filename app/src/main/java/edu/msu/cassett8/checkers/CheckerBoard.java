@@ -30,6 +30,7 @@ public class CheckerBoard {
     private int winner =0;
     private boolean popupShown = false;
     private int turn = 1;
+    private CheckerPiece jumpedPiece;
 
     private ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
     private ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
@@ -175,7 +176,7 @@ public class CheckerBoard {
 
     public void draw(Canvas canvas) {
 
-        if(isEnd = true)
+        if(isEnd == true)
         {
             return;
         }
@@ -314,11 +315,11 @@ public class CheckerBoard {
                 {
                     if(turn == 1)
                     {
-                        for (int j = whitePieces.size(); j>=0; j--)
+                        for (int j = whitePieces.size() - 1; j>=0; j--)
                         {
                             if (whitePieces.get(j).equals(jumped))
                             {
-                                whitePieces.remove(p);
+                                whitePieces.remove(j);
                                 if (whitePieces.isEmpty())
                                 {
                                     isEnd = true;
@@ -330,11 +331,11 @@ public class CheckerBoard {
                     }
                     else if (turn == 2)
                     {
-                        for (int j = greenPieces.size(); j>=0; j--)
+                        for (int j = greenPieces.size()-1; j != 0; j--)
                         {
                             if (greenPieces.get(j).equals(jumped))
                             {
-                                greenPieces.remove(p);
+                                greenPieces.remove(j);
                                 if (greenPieces.isEmpty())
                                 {
                                     isEnd=true;
@@ -383,6 +384,7 @@ public class CheckerBoard {
         for(int p=whitePieces.size()-1; p>=0;  p--) {
             if(whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                 // We hit a piece!
+                jumpedPiece = whitePieces.get(p);
                 return true;
             }
         }
@@ -390,6 +392,7 @@ public class CheckerBoard {
         for(int p=greenPieces.size()-1; p>=0;  p--) {
             if(greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                 // We hit a piece!
+                jumpedPiece = greenPieces.get(p);
                 return true;
             }
         }
@@ -401,25 +404,25 @@ public class CheckerBoard {
         if (type == 0) {
             if (isJumpable(piece.getX() + .125f, piece.getY() + .125f) && isJumpable(piece.getX() - .125f, piece.getY() + .125f)) {
                 if (isJumpable(piece.getX() + .25f, piece.getY() + .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() + .25f,piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() + .25f,piece,jumpedPiece));
                 }
                 else if (isJumpable(piece.getX() - .25f, piece.getY() + .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() + .25f,piece));
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() + .25f,piece,jumpedPiece));
                 }
                 else {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece));
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece,jumpedPiece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece,jumpedPiece));
                 }
             }
             else if (isJumpable(piece.getX() + .125f, piece.getY() + .125f)) {
                 if (!isJumpable(piece.getX() + .25f, piece.getY() + .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece,jumpedPiece));
                 }
                 availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
             }
             else if (isJumpable(piece.getX() - .125f, piece.getY() + .125f)) {
                 if (!isJumpable(piece.getX() - .25f, piece.getY() + .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece,jumpedPiece));
                 }
                 availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
             }
@@ -447,25 +450,25 @@ public class CheckerBoard {
         if (type == 1) {
             if (isJumpable(piece.getX() + .125f, piece.getY() - .125f) && isJumpable(piece.getX() - .125f, piece.getY() - .125f)) {
                 if (isJumpable(piece.getX() + .25f, piece.getY() - .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() - .25f,piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() - .25f,piece,jumpedPiece));
                 }
                 else if (isJumpable(piece.getX() - .25f, piece.getY() - .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() - .25f,piece));
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() - .25f,piece,jumpedPiece));
                 }
                 else {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece));
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece,jumpedPiece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece,jumpedPiece));
                 }
             }
             else if (isJumpable(piece.getX() + .125f, piece.getY() - .125f)) {
                 if (!isJumpable(piece.getX() + .25f, piece.getY() - .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece,jumpedPiece));
                 }
                 availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
             }
             else if (isJumpable(piece.getX() - .125f, piece.getY() - .125f)) {
                 if (!isJumpable(piece.getX() - .25f, piece.getY() - .25f)) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece));
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece,jumpedPiece));
                 }
                 availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
             }
