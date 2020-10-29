@@ -50,6 +50,10 @@ public class CheckersView extends View {
         init(attrs, defStyle);
     }
 
+    public int getWinner()
+    {
+        return board.getWinner();
+    }
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         board = new CheckerBoard(getContext(), this);

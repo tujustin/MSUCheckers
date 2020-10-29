@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 public class CheckerActivity extends AppCompatActivity {
 
-    private Bundle bundle;
-
+    String p1 = null;
+    String p2 = null;
+    int winner = 1;
     private CheckersView getCheckerView() {
         return this.findViewById(R.id.checkersView);
     }
@@ -20,9 +21,17 @@ public class CheckerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.checkers_view);
 
-
+        if(savedInstanceState == null) {
+            savedInstanceState = new Bundle();
+        }
+        Bundle xtras = getIntent().getExtras();
+        if (xtras != null) {
+            p1 = xtras.getString("playerone");
+            p2 = xtras.getString("playertwo");
+        }
         getCheckerView().loadInstanceState(savedInstanceState);
     }
     @Override
@@ -34,9 +43,11 @@ public class CheckerActivity extends AppCompatActivity {
 
     public void onEndGame(View view) {
         Intent intent = new Intent(this, EndActivity.class);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
+        Bundle ourBundle = new Bundle();
+        ourBundle.putString("playerone", p1);
+        ourBundle.putString("playertwo", p2);
+        ourBundle.putInt("winner", getCheckerView().getWinner());
+        intent.putExtras(ourBundle);
         startActivity(intent);
     }
 

@@ -27,7 +27,7 @@ public class CheckerBoard {
     private Player playerOne;
     private Player playerTwo;
     private boolean isEnd= false;
-    private int winner =0;
+    private int winner = 1;
     private boolean popupShown = false;
     private int turn = 1;
     private CheckerPiece jumpedPiece;
@@ -77,11 +77,17 @@ public class CheckerBoard {
 
 
     }
+    public int getWinner()
+    {
+        return winner;
+    }
     public void loadInstanceState(Bundle bundle, Context context) {
 
         if(bundle!=null) {
             turn = bundle.getInt("turn");
+            if(turn == 0) { turn = 1; }
             winner = bundle.getInt("winner");
+            if(winner == 0) { winner = 1; }
             isEnd = bundle.getBoolean("gameState");
             float[] wlocations = bundle.getFloatArray(White_Location);
             int[] wids = bundle.getIntArray(White_IDs);
@@ -91,7 +97,7 @@ public class CheckerBoard {
             ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
             ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
 
-            if (gids != null) {
+            if ((gids != null) && (wids !=null)) {
                 for (int i = 0; i < gids.length; i++) {
 
                     GreenChecker piece = new GreenChecker(context, R.drawable.spartan_green, gids[i]);
@@ -99,8 +105,7 @@ public class CheckerBoard {
                     greenPieces.add(piece);
                 }
                 this.greenPieces = greenPieces;
-            }
-            if (wids != null) {
+
                 for (int i = 0; i < wids.length; i++) {
 
                     WhiteChecker piece = new WhiteChecker(context, R.drawable.spartan_white, gids[i]);
@@ -108,8 +113,10 @@ public class CheckerBoard {
                     whitePieces.add(piece);
                 }
                 this.whitePieces = whitePieces;
+
+                initialized=true;
             }
-            initialized=true;
+
 
         }
 
@@ -294,7 +301,7 @@ public class CheckerBoard {
             }
         }
 
-        if (turn == 1) {
+        else {
 
 
             for (int p = greenPieces.size() - 1; p >= 0; p--) {

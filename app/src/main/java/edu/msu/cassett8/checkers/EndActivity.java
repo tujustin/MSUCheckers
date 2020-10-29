@@ -23,12 +23,26 @@ public class EndActivity extends AppCompatActivity {
         playerWinner = (TextView)findViewById(R.id.playerWinner);
         playerLoser = (TextView)findViewById(R.id.playerLoser);
 
+        String pOne = "Player One";
+        String pTwo = "Player Two";
         Bundle bundle = getIntent().getExtras();
-        String pOne = bundle.getString("playerone");
-        String pTwo = bundle.getString("playertwo");
+        int winner = 2;
+        if(bundle!=null) {
+            pOne = bundle.getString("playerone");
+            pTwo = bundle.getString("playertwo");
+            winner = bundle.getInt("winner");
+        }
 
-        playerWinner.setText(pOne + " is the winner!");
-        playerLoser.setText(pTwo + " is the loser!");
+        if(winner == 2)
+        {
+            playerWinner.setText(pTwo + " is the winner!");
+            playerLoser.setText(pOne + " is the loser!");
+        }
+        else
+        {
+            playerWinner.setText(pOne + " is the winner!");
+            playerLoser.setText(pTwo + " is the loser!");
+        }
 
     }
 
