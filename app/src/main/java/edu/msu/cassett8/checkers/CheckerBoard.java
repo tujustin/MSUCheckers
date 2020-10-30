@@ -448,13 +448,17 @@ public class CheckerBoard {
                 if (!isJumpable(piece.getX() + .25f, piece.getY() + .25f, type)) {
                     availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece,jumpedPiece));
                 }
-                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+                if (!isLeftEdge(piece.getX())) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+                }
             }
             else if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
                 if (!isJumpable(piece.getX() - .25f, piece.getY() + .25f, type)) {
                     availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece,jumpedPiece));
                 }
-                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+                if (!isRightEdge(piece.getX())) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+                }
             }
 
             else {
@@ -490,7 +494,6 @@ public class CheckerBoard {
                     }
                 }
             }
-
         }
 
         if (type == 1) {
@@ -510,13 +513,17 @@ public class CheckerBoard {
                 if (!isJumpable(piece.getX() + .25f, piece.getY() - .25f, type)) {
                     availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece,jumpedPiece));
                 }
-                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
+                if (!isLeftEdge(piece.getX())) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
+                }
             }
             else if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
                 if (!isJumpable(piece.getX() - .25f, piece.getY() - .25f, type)) {
                     availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece,jumpedPiece));
                 }
-                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+                if (!isRightEdge(piece.getX())) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+                }
             }
 
             else {
@@ -553,12 +560,7 @@ public class CheckerBoard {
                 }
             }
         }
-
-
         mCheckersView.invalidate();
-
-
-
     }
 
     public void setInitialPos(int wid, int hit)
