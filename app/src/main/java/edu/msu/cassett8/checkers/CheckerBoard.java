@@ -2,6 +2,7 @@ package edu.msu.cassett8.checkers;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,8 +25,8 @@ public class CheckerBoard {
     private int marginY;
     private float scaleFactor;
     private View mCheckersView;
-    private Player playerOne;
-    private Player playerTwo;
+    private String playerOne;
+    private String playerTwo;
     private boolean isEnd= false;
     private int winner = 1;
     private boolean popupShown = false;
@@ -74,6 +75,8 @@ public class CheckerBoard {
         bundle.putInt("turn", turn);
         bundle.putInt("winner", winner);
         bundle.putBoolean("gameState", isEnd);
+        bundle.putString("p1", playerOne);
+        bundle.putString("p2", playerTwo);
 
 
     }
@@ -84,6 +87,10 @@ public class CheckerBoard {
     public void loadInstanceState(Bundle bundle, Context context) {
 
         if(bundle!=null) {
+            String temp = bundle.getString("p1");
+            if(temp != null){ playerOne = temp;}
+            temp = bundle.getString("p2");
+            if(temp != null){ playerTwo = temp;}
             turn = bundle.getInt("turn");
             if(turn == 0) { turn = 1; }
             winner = bundle.getInt("winner");
@@ -133,7 +140,7 @@ public class CheckerBoard {
      */
 
 
-
+    Context mContext;
     public float leftEdge = 0.07f;
 
     public float rightEdge = 0.9f;
@@ -152,6 +159,7 @@ public class CheckerBoard {
     private Paint outlinePaint;
 
     public CheckerBoard(Context context, View theView){
+        mContext = context;
         mCheckersView = theView;
         boardImage = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.checkersboard);
@@ -172,21 +180,10 @@ public class CheckerBoard {
 
         }
 
-
-        playerOne = new Player(MainActivity.getPlayerOne());
-
-        /**
-         * Construct Player 2 with name and assign color
-         */
-        playerTwo = new Player(MainActivity.getPlayerTwo());
     }
 
     public void draw(Canvas canvas) {
 
-        if(isEnd == true)
-        {
-            return;
-        }
         int wid = canvas.getWidth();
         int hit = canvas.getHeight();
 
@@ -271,8 +268,11 @@ public class CheckerBoard {
 
                         builder.setTitle(R.string.endGame);
                         int id = 0;
-                        if(winner==1){id=R.string.player1Win;}else {id=R.string.player2Win;}
-                        builder.setMessage(id);
+                        Resources res = mContext.getResources();
+                        String player;
+                        if(winner==1){player=playerOne;}else {player=playerTwo;}
+                        String msg = player + " " + res.getString(R.string.player1Win);
+                        builder.setMessage(msg);
                         builder.setPositiveButton(android.R.string.ok, null);
 
                         // Create the dialog box and show it
@@ -351,7 +351,6 @@ public class CheckerBoard {
                                 break;
                             }
                         }
-
                     }
                 }
                 for( p=availableMoves.size()-1; p>=0; p--)
@@ -626,5 +625,13 @@ public class CheckerBoard {
             whiteCount++;
 
         }
+    }
+
+    public void setPlayerTwo(String playerTwo) {
+        this.playerTwo = playerTwo;
+    }
+
+    public void setPlayerOne(String playerOne) {
+        this.playerOne = playerOne;
     }
 }

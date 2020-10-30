@@ -50,6 +50,13 @@ public class CheckersView extends View {
         init(attrs, defStyle);
     }
 
+    public void setP1(String p1){
+        board.setPlayerOne(p1);
+    }
+    public void setP2(String p2){
+        board.setPlayerTwo(p2);
+    }
+
     public int getWinner()
     {
         return board.getWinner();

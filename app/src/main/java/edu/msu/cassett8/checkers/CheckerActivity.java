@@ -33,6 +33,8 @@ public class CheckerActivity extends AppCompatActivity {
             p2 = xtras.getString("playertwo");
         }
         getCheckerView().loadInstanceState(savedInstanceState);
+        getCheckerView().setP1(p1);
+        getCheckerView().setP2(p2);
     }
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
