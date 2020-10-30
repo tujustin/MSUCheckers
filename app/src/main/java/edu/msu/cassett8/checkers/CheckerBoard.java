@@ -147,6 +147,10 @@ public class CheckerBoard {
 
     public float diff = 0.08f;
 
+    public float topEdge = 0.07f;
+
+    public float bottomEdge = 0.9f;
+
 
 
 
@@ -385,6 +389,20 @@ public class CheckerBoard {
 
         return false;
     }
+    public boolean isTop(float y) {
+        if (Math.abs(topEdge - y) < diff) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isBottom(float y) {
+        if (Math.abs(bottomEdge - y) < diff) {
+            return true;
+        }
+        return false;
+    }
+
 
     private boolean isJumpable(float x, float y, int type) {
         if (type == 1) {
