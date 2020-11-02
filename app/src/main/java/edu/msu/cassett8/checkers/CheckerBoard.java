@@ -351,7 +351,7 @@ public class CheckerBoard {
                     }
                     else if (turn == 2)
                     {
-                        for (int j = greenPieces.size()-1; j != 0; j--)
+                        for (int j = greenPieces.size()-1; j >= 0; j--)
                         {
                             if (greenPieces.get(j).equals(jumped))
                             {
@@ -524,7 +524,7 @@ public class CheckerBoard {
         for(int i =  availableMoves.size() - 1; i >= 0; i-- ) {
             AvailableMove move = availableMoves.get(i);
             if (isGreen(move.getX(),move.getY()) || (isWhite(move.getX(),move.getY())) || move.getX() < (leftEdge - .05f) ||
-                move.getX() > (rightEdge + .05f) || move.getY() < (topEdge - .05f)  || move.getY() > bottomEdge) {
+                move.getX() > (rightEdge + .05f) || move.getY() < (topEdge - .05f)  || move.getY() > bottomEdge + .05f) {
                 availableMoves.remove(i);
             }
         }
