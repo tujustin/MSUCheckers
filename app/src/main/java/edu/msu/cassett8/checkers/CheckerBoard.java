@@ -141,8 +141,8 @@ public class CheckerBoard {
     public float leftEdge = 0.07f;
     public float rightEdge = 0.9f;
     public float diff = 0.05f;
-    public float topEdge = 0.065f;
-    public float bottomEdge = 0.94f;
+    public float topEdge = 0.07f;
+    public float bottomEdge = 0.9f;
 
     /**
      * Completed puzzle bitmap
@@ -315,7 +315,7 @@ public class CheckerBoard {
                 //Check if it is green
                 if(isGreen(c.getX(), c.getY())){
                     //Then check if it is on the edges
-                    if(isTop(c.getY() - .065f)) {
+                    if(isTop(c.getY())) {
                         c.isKingPiece();
                     }
 
@@ -509,8 +509,6 @@ public class CheckerBoard {
 
                 availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
                 availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
-                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
             }
             else{
                 if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
@@ -519,9 +517,9 @@ public class CheckerBoard {
                 if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
                     availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
                 }
-                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
             }
+            availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+            availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
         }
         for(int i =  availableMoves.size() - 1; i >= 0; i-- ) {
             AvailableMove move = availableMoves.get(i);
