@@ -110,4 +110,8 @@ public class AvailableMove {
     {
         return JumpedPiece;
     }
+
+    public CheckerPiece getPiece() {
+        return piece;
+    }
 }

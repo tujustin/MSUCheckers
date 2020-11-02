@@ -27,7 +27,10 @@ public class CheckerPiece {
 
     private int mNum; //number identifier for checker piece
 
-
+    /**
+     * is king boolean
+     */
+    private boolean isKing = false;
 
     public CheckerPiece(Context context, int id, int number) {
 
@@ -120,6 +123,10 @@ public class CheckerPiece {
     public int getID()
     {
         return mNum;
+    }
+
+    public void isKingPiece(){
+        isKing = true;
     }
 
 }

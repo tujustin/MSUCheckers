@@ -2,6 +2,7 @@ package edu.msu.cassett8.checkers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,13 +28,24 @@ public class MainActivity extends AppCompatActivity {
         player2 = (EditText) findViewById(R.id.player2);
         playerOne = player1.getText().toString();
         playerTwo = player2.getText().toString();
-        Bundle bundle = new Bundle();
-        bundle.putString("playerone", playerOne);
-        bundle.putString("playertwo", playerTwo);
-        ///For checker activity class
-        Intent intent = new Intent(this, CheckerActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        //Check if the names are empty or not
+        if(playerOne.equals("") && playerTwo.equals("")){
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle(R.string.nothing)
+                    .setMessage(R.string.emptytext)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create()
+                    .show();
+        }
+        else{
+            Bundle bundle = new Bundle();
+            bundle.putString("playerone", playerOne);
+            bundle.putString("playertwo", playerTwo);
+            ///For checker activity class
+            Intent intent = new Intent(this, CheckerActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     /**

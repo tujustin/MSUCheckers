@@ -22,6 +22,7 @@ public class CheckersView extends View {
     private float mTextHeight;
     private CheckerBoard board;
 
+
     public CheckersView(Context context)
     {
         super(context);

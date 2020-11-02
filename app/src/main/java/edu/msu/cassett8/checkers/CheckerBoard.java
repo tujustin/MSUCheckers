@@ -309,6 +309,31 @@ public class CheckerBoard {
             if(availableMoves.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                 // We hit a piece!
                 AvailableMove i = availableMoves.get(p);
+
+                //Check if it is king
+                CheckerPiece c = availableMoves.get(p).getPiece();
+                //Check if it is green
+                if(isGreen(c.getX(), c.getY())){
+                    //Then check if it is on the edges
+                    if(isTop(c.getY() - .065f)) {
+                        c.isKingPiece();
+                    }
+                    else if (isBottom(c.getY() - .987f)){
+                        c.isKingPiece();
+                    }
+                }
+                //Check if it is white
+                if(isWhite(c.getX(), c.getY())){
+                    //Then check if it is on the edges
+                    if(isTop(c.getY() - .065f)) {
+                        c.isKingPiece();
+                    }
+                    else if (isBottom(c.getY() - .987f)){
+                        c.isKingPiece();
+                    }
+                }
+
+
                 CheckerPiece jumped = i.getJumpedPiece();
 
                 if(jumped !=null)

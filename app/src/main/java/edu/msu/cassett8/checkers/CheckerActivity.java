@@ -3,6 +3,7 @@ package edu.msu.cassett8.checkers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,12 +36,24 @@ public class CheckerActivity extends AppCompatActivity {
         getCheckerView().loadInstanceState(savedInstanceState);
         getCheckerView().setP1(p1);
         getCheckerView().setP2(p2);
+
+        onStartGame(getCheckerView());
+
     }
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
 
         getCheckerView().saveInstanceState(bundle);
+    }
+
+    public void onStartGame(View view){
+        new AlertDialog.Builder(view.getContext())
+                .setTitle(R.string.instructions)
+                .setMessage(R.string.controlsDesc)
+                .setPositiveButton(android.R.string.ok, null)
+                .create()
+                .show();
     }
 
     public void onEndGame(View view) {

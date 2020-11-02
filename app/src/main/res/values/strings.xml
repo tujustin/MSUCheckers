@@ -11,10 +11,13 @@
     <string name="newGame">New Game</string>
     <string name="buttonDesc">Select done to end game or resign to forfeit</string>
     <string name="playerDesc">Player 1 is Green Player2 is White. Player1 goes first</string>
-    <string name="controlsDesc">Controls: select the peice to move then select the square to move it</string>
+    <string name="controlsDesc">Controls: select the piece to move then select the square to move it</string>
+    <string name="instructions">Instructions</string>
     <string name="player1Win">Has Won! Press the Done Button to Continue</string>
     <string name="ok">Ok</string>
     <string name="cancel">cancel</string>
     <string name="endGame">Game Over</string>
+    <string name="nothing">No Player Names</string>
+    <string name="emptytext">Empty player names. Please enter valid player names.</string>
 
 </resources>
