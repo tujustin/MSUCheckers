@@ -104,7 +104,8 @@ public class AvailableMove {
         return true;
     }
 
-
+    public float getX() {return x;}
+    public float getY() {return y;}
     public CheckerPiece getJumpedPiece()
     {
         return JumpedPiece;

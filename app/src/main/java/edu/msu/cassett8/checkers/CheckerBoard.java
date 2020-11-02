@@ -142,13 +142,9 @@ public class CheckerBoard {
 
     Context mContext;
     public float leftEdge = 0.07f;
-
     public float rightEdge = 0.9f;
-
     public float diff = 0.08f;
-
     public float topEdge = 0.07f;
-
     public float bottomEdge = 0.9f;
 
 
@@ -450,6 +446,7 @@ public class CheckerBoard {
     public void findAvailableMoves(CheckerPiece piece , int type) {
         availableMoves.clear();
         if (type == 0) {
+
             if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type) && isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
                 if (isJumpable(piece.getX() + .25f, piece.getY() + .25f, type)) {
                     availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() + .25f,piece,jumpedPiece));
@@ -576,6 +573,12 @@ public class CheckerBoard {
                         }
                     }
                 }
+            }
+        }
+        for(int i = 0; i <= availableMoves.size() - 1; i++ ) {
+            AvailableMove move = availableMoves.get(i);
+            if (isGreen(move.getX(),move.getY()) || (isWhite(move.getX(),move.getY()))) {
+                availableMoves.remove(i);
             }
         }
         mCheckersView.invalidate();
