@@ -59,11 +59,33 @@ public class CheckerActivity extends AppCompatActivity {
     }
 
     public void onEndGame(View view) {
+
+    }
+
+    public void Done(View view){
+        if(getCheckerView().getisEnd())
+        {
+            Intent intent = new Intent(this, EndActivity.class);
+            Bundle ourBundle = new Bundle();
+            ourBundle.putString("playerone", p1);
+            ourBundle.putString("playertwo", p2);
+            ourBundle.putInt("winner", getCheckerView().getWinner());
+            intent.putExtras(ourBundle);
+            startActivity(intent);
+        }
+        else {
+            getCheckerView().changeTurn();
+        }
+    }
+
+    public void Resign(View view)
+    {
         Intent intent = new Intent(this, EndActivity.class);
         Bundle ourBundle = new Bundle();
         ourBundle.putString("playerone", p1);
         ourBundle.putString("playertwo", p2);
-        ourBundle.putInt("winner", getCheckerView().getWinner());
+        int winner = (getCheckerView().getTurn() == 1) ? 2 : 1;
+        ourBundle.putInt("winner", winner);
         intent.putExtras(ourBundle);
         startActivity(intent);
     }

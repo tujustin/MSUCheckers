@@ -62,6 +62,15 @@ public class CheckersView extends View {
     {
         return board.getWinner();
     }
+    public int getTurn(){return board.getTurn();}
+    public void changeTurn()
+    {
+        board.changeTurn();
+    }
+    public boolean getisEnd()
+    {
+        return board.getisEnd();
+    }
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         board = new CheckerBoard(getContext(), this);

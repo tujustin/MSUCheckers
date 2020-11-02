@@ -20,6 +20,7 @@ public class CheckerBoard {
     boolean initialized = false;
     final static float SCALE_IN_VIEW = .95f;
 
+    private boolean went = false;
     private int puzzleSize;
     private int marginX;
     private int marginY;
@@ -79,12 +80,27 @@ public class CheckerBoard {
         bundle.putBoolean("gameState", isEnd);
         bundle.putString("p1", playerOne);
         bundle.putString("p2", playerTwo);
+        bundle.putBoolean("went", went);
 
 
     }
     public int getWinner()
     {
         return winner;
+    }
+    public int getTurn()
+    {
+        return turn;
+    }
+    public void changeTurn()
+    {
+        if (turn == 1) { turn = 2;} else { turn = 1;}
+        went = false;
+
+    }
+    public boolean getisEnd()
+    {
+        return isEnd;
     }
     public void loadInstanceState(Bundle bundle, Context context) {
 
@@ -94,6 +110,11 @@ public class CheckerBoard {
             temp = bundle.getString("p2");
             if(temp != null){ playerTwo = temp;}
             turn = bundle.getInt("turn");
+            boolean went = bundle.getBoolean("went");
+            if(went ==true)
+            {
+                this.went = went;
+            }
             if(turn == 0) { turn = 1; }
             winner = bundle.getInt("winner");
             if(winner == 0) { winner = 1; }
@@ -285,6 +306,10 @@ public class CheckerBoard {
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
         if(turn == 2) {
+            if(went) {
+
+                return false;
+            }
 
             for (int p = whitePieces.size() - 1; p >= 0; p--) {
                 if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
@@ -298,6 +323,10 @@ public class CheckerBoard {
 
         else {
 
+            if(went)
+            {
+                return false;
+            }
 
             for (int p = greenPieces.size() - 1; p >= 0; p--) {
                 if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
@@ -373,7 +402,7 @@ public class CheckerBoard {
                     availableMoves.remove(p);
                 }
 
-                if (turn == 1) { turn = 2;} else { turn = 1;}
+                went=true;
 
                 mCheckersView.invalidate();
                 return true;
