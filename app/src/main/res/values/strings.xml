@@ -19,5 +19,7 @@
     <string name="endGame">Game Over</string>
     <string name="nothing">No Player Names</string>
     <string name="emptytext">Empty player names. Please enter valid player names.</string>
+    <string name="playeroneempty">Player One needs an input. Please enter a player name.</string>
+    <string name="playertwoempty">Player two needs an input. Please enter a player name.</string>
 
 </resources>

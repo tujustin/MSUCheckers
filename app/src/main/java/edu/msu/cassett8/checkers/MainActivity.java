@@ -37,6 +37,22 @@ public class MainActivity extends AppCompatActivity {
                     .create()
                     .show();
         }
+        else if (playerOne.equals("")){
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle(R.string.nothing)
+                    .setMessage(R.string.playeroneempty)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create()
+                    .show();
+        }
+        else if (playerTwo.equals("")){
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle(R.string.nothing)
+                    .setMessage(R.string.playertwoempty)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create()
+                    .show();
+        }
         else{
             Bundle bundle = new Bundle();
             bundle.putString("playerone", playerOne);
