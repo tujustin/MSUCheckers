@@ -318,17 +318,12 @@ public class CheckerBoard {
                     if(isTop(c.getY() - .065f)) {
                         c.isKingPiece();
                     }
-                    else if (isBottom(c.getY() - .987f)){
-                        c.isKingPiece();
-                    }
+
                 }
                 //Check if it is white
                 if(isWhite(c.getX(), c.getY())){
                     //Then check if it is on the edges
-                    if(isTop(c.getY() - .065f)) {
-                        c.isKingPiece();
-                    }
-                    else if (isBottom(c.getY() - .987f)){
+                    if (isBottom(c.getY())){
                         c.isKingPiece();
                     }
                 }
@@ -464,147 +459,74 @@ public class CheckerBoard {
     public void findAvailableMoves(CheckerPiece piece , int type) {
         availableMoves.clear();
         if (type == 0) {
-            /*
-            if (piece.isKing()) {
-                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type) && isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
 
+            if (piece.getKing()) {
+                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
                 }
-            }*/
-            if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type) && isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
-                if (isJumpable(piece.getX() + .25f, piece.getY() + .25f, type) && (!isBottom(piece.getY() + .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() + .25f,piece,jumpedPiece));
+                if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
                 }
-                else if (isJumpable(piece.getX() - .25f, piece.getY() + .25f, type ) && (!isBottom(piece.getY() + .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() + .25f,piece,jumpedPiece));
+                if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
                 }
-                else {
-                    if(!isBottom(piece.getY() + .125f)) {
-                        availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
-                        availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
-                    }
+                if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
                 }
+
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
             }
-            else if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
-                if (!isJumpable(piece.getX() + .25f, piece.getY() + .25f, type) && (!isBottom(piece.getY() + .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece,jumpedPiece));
+            else{
+                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
                 }
-                if (!isLeftEdge(piece.getX())) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+                if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
                 }
-            }
-            else if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
-                if (!isJumpable(piece.getX() - .25f, piece.getY() + .25f, type) && (!isBottom(piece.getY() + .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece,jumpedPiece));
-                }
-                if (!isRightEdge(piece.getX())) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
-                }
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
             }
 
-            else {
-                if (isLeftEdge(piece.getX())  && !isWhite(piece.getX() + .125f, piece.getY() + .125f)) {
-
-                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
-
-                }
-                if (isRightEdge(piece.getX()) && !isWhite(piece.getX() - .125f, piece.getY() + .125f)) {
-
-                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
-
-                }
-
-                if (!isRightEdge(piece.getX()) && !isLeftEdge(piece.getX())) {
-                    if (isWhite(piece.getX() + .125f, piece.getY() + .125f) && !isWhite(piece.getX() - .125f, piece.getY() + .125f)) {
-                        availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
-                    }
-                    else if (!isWhite(piece.getX() + .125f, piece.getY() + .125f) && isWhite(piece.getX() - .125f, piece.getY() + .125f)) {
-                        availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
-                    }
-                    else if (!isWhite(piece.getX() + .125f, piece.getY() + .125f) && !isWhite(piece.getX() - .125f, piece.getY() + .125f)) {
-                        if (isRightEdge(piece.getX() + .125f) && isGreen(piece.getX() + .125f,piece.getY() + .125f) ) {
-                            availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
-                        }
-                        else if (isLeftEdge((piece.getX() - .125f))&& isGreen(piece.getX() - .125f,piece.getY() + .125f)) {
-                            availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
-                        }
-                        else{
-                            availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
-                            availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
-                        }
-                    }
-                }
-            }
         }
 
         if (type == 1) {
-            if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type) && isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
-                if (isJumpable(piece.getX() + .25f, piece.getY() - .25f, type) && (!isTop(piece.getY() - .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f,piece.getY() - .25f,piece,jumpedPiece));
+            if (piece.getKing()) {
+                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
                 }
-                else if (isJumpable(piece.getX() - .25f, piece.getY() - .25f, type) && (!isTop(piece.getY() - .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f,piece.getY() - .25f,piece,jumpedPiece));
+                if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
                 }
-                else {
-                    if (!isTop(piece.getY() - .125f)) {
-                        availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
-                        availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
-                    }
+                if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
                 }
+                if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() + .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() + .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
             }
-            else if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
-                if (!isJumpable(piece.getX() + .25f, piece.getY() - .25f, type) && (!isTop(piece.getY() - .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece,jumpedPiece));
+            else{
+                if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
                 }
-                if (!isLeftEdge(piece.getX())) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
+                if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
                 }
-            }
-            else if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
-                if (!isJumpable(piece.getX() - .25f, piece.getY() - .25f, type) && (!isTop(piece.getY() - .125f))) {
-                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece,jumpedPiece));
-                }
-                if (!isRightEdge(piece.getX())) {
-                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-                }
-            }
-
-            else {
-                if (isLeftEdge(piece.getX())&& !isGreen(piece.getX() + .125f, piece.getY() - .125f)) {
-
-                    availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-
-                }
-                if (isRightEdge(piece.getX())&& !isGreen(piece.getX() - .125f, piece.getY() - .125f)) {
-
-                    availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
-
-                }
-
-                if (!isRightEdge(piece.getX()) && !isLeftEdge(piece.getX())) {
-                    if (isGreen(piece.getX() + .125f, piece.getY() - .125f) && !isGreen(piece.getX() - .125f, piece.getY() - .125f)) {
-                        availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
-                    }
-                    else if (!isGreen(piece.getX() + .125f, piece.getY() - .125f) && isGreen(piece.getX() - .125f, piece.getY() - .125f)) {
-                        availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-                    }
-                    else if (!isGreen(piece.getX() + .125f, piece.getY() - .125f) && !isGreen(piece.getX() - .125f, piece.getY() - .125f)) {
-                        if (isRightEdge(piece.getX() + .125f) && isWhite(piece.getX() + .125f,piece.getY() - .125f)) {
-                            availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
-                        }
-                        else if (isLeftEdge((piece.getX() - .125f)) && isWhite(piece.getX() - .125f,piece.getY() - .125f)) {
-                            availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-                        }
-                        else{
-                            availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
-                            availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
-                        }
-                    }
-                }
+                availableMoves.add(new AvailableMove(piece.getX() + .125f, piece.getY() - .125f, piece));
+                availableMoves.add(new AvailableMove(piece.getX() - .125f, piece.getY() - .125f, piece));
             }
         }
-        for(int i = 0; i < availableMoves.size(); i++ ) {
+        for(int i =  availableMoves.size() - 1; i >= 0; i-- ) {
             AvailableMove move = availableMoves.get(i);
-            if (isGreen(move.getX(),move.getY()) || (isWhite(move.getX(),move.getY()))) {
+            if (isGreen(move.getX(),move.getY()) || (isWhite(move.getX(),move.getY())) || move.getX() < (leftEdge - .05f) ||
+                move.getX() > (rightEdge + .05f) || move.getY() < (topEdge - .05f)  || move.getY() > bottomEdge) {
                 availableMoves.remove(i);
             }
         }

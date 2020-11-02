@@ -124,6 +124,7 @@ public class CheckerPiece {
     {
         return mNum;
     }
+    public boolean getKing() {return isKing;}
 
     public void isKingPiece(){
         isKing = true;
