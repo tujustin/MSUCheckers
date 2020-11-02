@@ -51,21 +51,23 @@ public class CheckerBoard {
     public void saveInstanceState(Bundle bundle) {
 
         float [] wlocations = new float[whitePieces.size() * 2];
-        int [] wids = new int[whitePieces.size()];
+        int [] wids = new int[whitePieces.size() * 2];
         float [] glocations = new float[greenPieces.size() * 2];
-        int [] gids = new int[greenPieces.size()];
+        int [] gids = new int[greenPieces.size()* 2];
 
         for(int i=0;  i<whitePieces.size(); i++) {
             CheckerPiece piece = whitePieces.get(i);
             wlocations[i*2] = piece.getX();
             wlocations[i*2+1] = piece.getY();
-            wids[i] = piece.getID();
+            wids[i*2] = piece.getID();
+            wids[i*2+1] = piece.getKing() ? 1 : 0;
         }
         for(int i=0;  i<greenPieces.size(); i++) {
             CheckerPiece piece = greenPieces.get(i);
             glocations[i*2] = piece.getX();
             glocations[i*2+1] = piece.getY();
-            gids[i] = piece.getID();
+            gids[i*2] = piece.getID();
+            gids[i*2+1] =  piece.getKing() ? 1 : 0;
         }
 
         bundle.putFloatArray(White_Location, wlocations);
@@ -105,17 +107,19 @@ public class CheckerBoard {
             ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
 
             if ((gids != null) && (wids !=null)) {
-                for (int i = 0; i < gids.length; i++) {
+                for (int i = 0; i < (gids.length/2); i++) {
 
-                    GreenChecker piece = new GreenChecker(context, R.drawable.spartan_green, gids[i]);
+                    GreenChecker piece = new GreenChecker(context, gids[i*2]);
+                    piece.SetKing(gids[i*2+1]);
                     piece.setCords(glocations[i * 2], glocations[i * 2 + 1]);
                     greenPieces.add(piece);
                 }
                 this.greenPieces = greenPieces;
 
-                for (int i = 0; i < wids.length; i++) {
+                for (int i = 0; i < (wids.length/2); i++) {
 
-                    WhiteChecker piece = new WhiteChecker(context, R.drawable.spartan_white, gids[i]);
+                    WhiteChecker piece = new WhiteChecker(context, wids[i*2]);
+                    piece.SetKing(wids[i*2+1]);
                     piece.setCords(wlocations[i * 2], wlocations[i * 2 + 1]);
                     whitePieces.add(piece);
                 }
@@ -161,14 +165,12 @@ public class CheckerBoard {
         //spawn white checkers
         for (int i=0; i<12; i++) {
             whitePieces.add(new WhiteChecker(context,
-                    R.drawable.spartan_white,
                     i));
         }
 
         //spawn green checkers
         for (int i=0; i<12; i++) {
             greenPieces.add(new GreenChecker(context,
-                    R.drawable.spartan_green,
                     i));
 
         }

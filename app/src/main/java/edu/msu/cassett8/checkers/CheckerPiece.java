@@ -32,10 +32,9 @@ public class CheckerPiece {
      */
     private boolean isKing = false;
 
-    public CheckerPiece(Context context, int id, int number) {
+    public CheckerPiece(Context context, int number) {
 
         //based on checkernumber
-        piece = BitmapFactory.decodeResource(context.getResources(), id);
         mNum = number;
     }
     /**
@@ -61,6 +60,7 @@ public class CheckerPiece {
 
         // Draw the bitmap
         canvas.drawBitmap(piece, 0, 0, null);
+
 
         canvas.restore();
     }
@@ -130,4 +130,12 @@ public class CheckerPiece {
         isKing = true;
     }
 
+    public void SetKing(int x)
+    {
+        isKing = (x==1);
+    }
+
+    public void setPiece(Bitmap piece) {
+        this.piece = piece;
+    }
 }
