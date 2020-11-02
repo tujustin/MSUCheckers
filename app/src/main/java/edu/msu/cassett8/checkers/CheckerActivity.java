@@ -27,6 +27,7 @@ public class CheckerActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             savedInstanceState = new Bundle();
+            onStartGame(getCheckerView());
         }
         Bundle xtras = getIntent().getExtras();
         if (xtras != null) {
@@ -36,8 +37,9 @@ public class CheckerActivity extends AppCompatActivity {
         getCheckerView().loadInstanceState(savedInstanceState);
         getCheckerView().setP1(p1);
         getCheckerView().setP2(p2);
+        boolean checkStart = savedInstanceState.getBoolean("started");
 
-        onStartGame(getCheckerView());
+
 
     }
     @Override

@@ -26,18 +26,6 @@
             android:onClick="onEndGame"
             android:text="@string/buttonDone" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/playerDesc" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="@string/buttonDesc" />
 
     </FrameLayout>
 
@@ -53,12 +41,7 @@
             android:layout_gravity="center"
             android:onClick="onEndGame"
             android:text="@string/buttonRes" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/controlsDesc" />
+        
     </FrameLayout>
 
 </LinearLayout>
