@@ -99,8 +99,10 @@ public class CheckerBoard {
     public void changeTurn()
     {
         if (turn == 1) { turn = 2;} else { turn = 1;}
+        availableMoves = new ArrayList<AvailableMove>();
         jumpedPiece = null;
         went = false;
+        mCheckersView.invalidate();
 
     }
     public boolean getisEnd()

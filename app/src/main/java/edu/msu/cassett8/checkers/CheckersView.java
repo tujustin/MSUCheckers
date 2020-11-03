@@ -50,6 +50,10 @@ public class CheckersView extends View {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
+    public int getTurn()
+    {
+        return board.getTurn();
+    }
 
     public void setP1(String p1){
         board.setPlayerOne(p1);
@@ -62,7 +66,6 @@ public class CheckersView extends View {
     {
         return board.getWinner();
     }
-    public int getTurn(){return board.getTurn();}
     public void changeTurn()
     {
         board.changeTurn();
@@ -78,6 +81,7 @@ public class CheckersView extends View {
                 attrs, R.styleable.CheckersView, defStyle, 0);
 
         setId(R.id.checkersView);
+
 
     }
 

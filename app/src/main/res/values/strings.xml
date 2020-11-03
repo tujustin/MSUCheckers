@@ -9,7 +9,12 @@
     <string name="winner">Player X is the winner!</string>
     <string name="loser">Player Z is the loser!</string>
     <string name="newGame">New Game</string>
-    <string name="controlsDesc">Controls: select the piece to move then select the square to move it Player 1 is Green Player2 is White. Player1 goes first. Select done end turn or resign to forfeit</string>
+    <string name="controlsDesc">Controls: select the piece to move then select the square to move it. </string>
+    <string name="greenPlayer"> is Green. </string>
+    <string name="whitePlayer"> is White. </string>
+    <string name="turn">It is Player</string>
+    <string name="turnC">turn</string>
+    <string name="first"> goes first. Select done end turn or resign to forfeit</string>
     <string name="instructions">Instructions</string>
     <string name="player1Win">Has Won! Press the Done Button to Continue</string>
     <string name="ok">Ok</string>

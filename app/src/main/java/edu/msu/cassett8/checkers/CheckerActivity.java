@@ -1,6 +1,5 @@
 package edu.msu.cassett8.checkers;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -25,19 +24,30 @@ public class CheckerActivity extends AppCompatActivity {
 
         setContentView(R.layout.checkers_view);
 
-        if(savedInstanceState == null) {
-            savedInstanceState = new Bundle();
-            onStartGame(getCheckerView());
-        }
         Bundle xtras = getIntent().getExtras();
         if (xtras != null) {
             p1 = xtras.getString("playerone");
             p2 = xtras.getString("playertwo");
         }
+        if(savedInstanceState == null) {
+            savedInstanceState = new Bundle();
+            onStartGame(getCheckerView());
+        }
         getCheckerView().loadInstanceState(savedInstanceState);
         getCheckerView().setP1(p1);
         getCheckerView().setP2(p2);
         boolean checkStart = savedInstanceState.getBoolean("started");
+        TextView textView = (TextView) findViewById(R.id.turnText);
+        String playersTurn = null;
+        if(getCheckerView().getTurn() == 1)
+        {
+            playersTurn = p1;
+        }
+        else {
+            playersTurn = p2;
+        }
+        String msg = getString(R.string.turn) + " " + playersTurn + " " + getString(R.string.turnC);
+        textView.setText(msg);
 
 
 
@@ -50,17 +60,19 @@ public class CheckerActivity extends AppCompatActivity {
     }
 
     public void onStartGame(View view){
+        String msg = getString(R.string.controlsDesc) + " " + p1 + " " + getString(R.string.greenPlayer) + " " + p2 + " " + getString(R.string.whitePlayer) + " " + p1 + " " + getString(R.string.first);
+        TextView textView = (TextView) findViewById(R.id.turnText);
+        String playersTurn = null;
+        String msg2 = getString(R.string.turn) + " " + p1 + " " + getString(R.string.turnC);
+        textView.setText(msg2);
         new AlertDialog.Builder(view.getContext())
                 .setTitle(R.string.instructions)
-                .setMessage(R.string.controlsDesc)
+                .setMessage(msg)
                 .setPositiveButton(android.R.string.ok, null)
                 .create()
                 .show();
     }
 
-    public void onEndGame(View view) {
-
-    }
 
     public void Done(View view){
         if(getCheckerView().getisEnd())
@@ -75,6 +87,17 @@ public class CheckerActivity extends AppCompatActivity {
         }
         else {
             getCheckerView().changeTurn();
+            TextView textView = (TextView) findViewById(R.id.turnText);
+            String playersTurn = null;
+            if(getCheckerView().getTurn() == 1)
+            {
+                playersTurn = p1;
+            }
+            else {
+                playersTurn = p2;
+            }
+            String msg = getString(R.string.turn) + " " + playersTurn + " " + getString(R.string.turnC);
+            textView.setText(msg);
         }
     }
 
