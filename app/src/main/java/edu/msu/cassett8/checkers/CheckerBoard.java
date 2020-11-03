@@ -34,6 +34,7 @@ public class CheckerBoard {
     private int winner = 1;
     private boolean popupShown = false;
     private int turn = 1;
+    private boolean selected = false;
     private CheckerPiece jumpedPiece;
 
     private ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
@@ -116,6 +117,7 @@ public class CheckerBoard {
         bundle.putBoolean("went", went);
         bundle.putString("former", valueOf(formerID));
 
+        bundle.putBoolean("select", selected);
 
     }
     public int getWinner()
@@ -132,6 +134,7 @@ public class CheckerBoard {
         availableMoves = new ArrayList<AvailableMove>();
         jumpedPiece = null;
         went = false;
+        selected = false;
         mCheckersView.invalidate();
 
     }
@@ -147,6 +150,7 @@ public class CheckerBoard {
             {
                 formerID = Integer.parseInt(form);
             }
+            selected = bundle.getBoolean("select");
             String temp = bundle.getString("p1");
             if(temp != null){ playerOne = temp;}
             temp = bundle.getString("p2");
@@ -348,7 +352,7 @@ public class CheckerBoard {
         switch (event.getActionMasked()) {
 
             case MotionEvent.ACTION_DOWN:
-                boolean result = onTouched(relX, relY);
+                boolean result = onTouched(relX, relY, view);
                 if(isEnd)
                 {
                     if(!popupShown)
@@ -379,7 +383,7 @@ public class CheckerBoard {
         }
         return false;
     }
-    private boolean onTouched(float x, float y) {
+    private boolean onTouched(float x, float y, View view) {
 
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
@@ -393,6 +397,7 @@ public class CheckerBoard {
                         if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                             // We hit a piece!
                             findDoubles(whitePieces.get(p), 0);
+                            selected = true;
                             //whitePieces.remove(p);
                             return true;
                         }
@@ -403,6 +408,7 @@ public class CheckerBoard {
                         // We hit a piece!
                         findAvailableMoves(whitePieces.get(p), 0);
                         //whitePieces.remove(p);
+                        selected = true;
                         if(jumpedPiece!=null) {
                             formerID = p;
                         }
@@ -421,6 +427,7 @@ public class CheckerBoard {
                         if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                             // We hit a piece!
                             findDoubles(greenPieces.get(p), 1);
+                            selected = true;
                             return true;
                         }
                     }
@@ -429,6 +436,7 @@ public class CheckerBoard {
                     if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                         // We hit a piece!
                         findAvailableMoves(greenPieces.get(p), 1);
+                        selected = true;
                         if(jumpedPiece!=null) {
                             formerID = p;
                         }
@@ -437,84 +445,91 @@ public class CheckerBoard {
                 }
             }
         }
-        for(int p=availableMoves.size()-1; p>=0;  p--) {
-            if(availableMoves.get(p).hit(x, y, puzzleSize, scaleFactor)) {
-                // We hit a piece!
-                AvailableMove i = availableMoves.get(p);
+        if(!availableMoves.isEmpty()) {
+            for (int p = availableMoves.size() - 1; p >= 0; p--) {
+                if (availableMoves.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                    // We hit a piece!
+                    selected = false;
+                    AvailableMove i = availableMoves.get(p);
 
-                //Check if it is king
-                CheckerPiece c = availableMoves.get(p).getPiece();
-                //Check if it is green
-                if(isGreen(c.getX(), c.getY())){
-                    //Then check if it is on the edges
-                    if(isTop(c.getY())) {
-                        c.isKingPiece();
+                    //Check if it is king
+                    CheckerPiece c = availableMoves.get(p).getPiece();
+                    //Check if it is green
+                    if (isGreen(c.getX(), c.getY())) {
+                        //Then check if it is on the edges
+                        if (isTop(c.getY())) {
+                            c.isKingPiece();
+                        }
+
+                    }
+                    //Check if it is white
+                    if (isWhite(c.getX(), c.getY())) {
+                        //Then check if it is on the edges
+                        if (isBottom(c.getY())) {
+                            c.isKingPiece();
+                        }
                     }
 
-                }
-                //Check if it is white
-                if(isWhite(c.getX(), c.getY())){
-                    //Then check if it is on the edges
-                    if (isBottom(c.getY())){
-                        c.isKingPiece();
-                    }
-                }
 
+                    CheckerPiece jumped = i.getJumpedPiece();
 
-                CheckerPiece jumped = i.getJumpedPiece();
-
-                if(jumped !=null)
-                {
-                    if(turn == 1)
-                    {
-                        for (int j = whitePieces.size() - 1; j>=0; j--)
-                        {
-                            if (whitePieces.get(j).equals(jumped))
-                            {
-                                whitePieces.remove(j);
-                                if (whitePieces.isEmpty())
-                                {
-                                    isEnd = true;
-                                    winner=1;
+                    if (jumped != null) {
+                        if (turn == 1) {
+                            for (int j = whitePieces.size() - 1; j >= 0; j--) {
+                                if (whitePieces.get(j).equals(jumped)) {
+                                    whitePieces.remove(j);
+                                    if (whitePieces.isEmpty()) {
+                                        isEnd = true;
+                                        winner = 1;
+                                    }
+                                    break;
                                 }
-                                break;
+                            }
+                        } else if (turn == 2) {
+                            for (int j = greenPieces.size() - 1; j >= 0; j--) {
+                                if (greenPieces.get(j).equals(jumped)) {
+                                    greenPieces.remove(j);
+                                    if (greenPieces.isEmpty()) {
+                                        isEnd = true;
+                                        winner = 2;
+                                    }
+                                    break;
+                                }
                             }
                         }
                     }
-                    else if (turn == 2)
-                    {
-                        for (int j = greenPieces.size()-1; j >= 0; j--)
-                        {
-                            if (greenPieces.get(j).equals(jumped))
-                            {
-                                greenPieces.remove(j);
-                                if (greenPieces.isEmpty())
-                                {
-                                    isEnd=true;
-                                    winner=2;
-                                }
-                                break;
-                            }
-                        }
+                    for (p = availableMoves.size() - 1; p >= 0; p--) {
+                        availableMoves.remove(p);
                     }
-                }
-                for( p=availableMoves.size()-1; p>=0; p--)
-                {
-                    availableMoves.remove(p);
-                }
 
-                if(went)
-                {
-                    formerID=-1;
-                }
-                went=true;
-                mCheckersView.invalidate();
-                return true;
+                    if (went) {
+                        formerID = -1;
+                    }
+                    went = true;
+                    mCheckersView.invalidate();
+                    return true;
 
+                }
             }
         }
+        if(selected)
+        {
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(view.getContext());
 
+            // Parameterize the builder
+
+            builder.setTitle(R.string.invalid);
+            Resources res = mContext.getResources();
+            builder.setMessage(R.string.invalidMsg);
+            builder.setPositiveButton(android.R.string.ok, null);
+
+            // Create the dialog box and show it
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
         return false;
+
     }
 
     public boolean isLeftEdge(float x) {

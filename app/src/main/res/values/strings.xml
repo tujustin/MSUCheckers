@@ -24,5 +24,7 @@
     <string name="playertwoempty">Player two needs an input. Please enter a player name.</string>
     <string name="isWinner"> is the winner!</string>
     <string name="isLoser"> is the loser!</string>
+    <string name="invalid"> Invalid Move</string>
+    <string name="invalidMsg"> Invalid Move! Please Select One of The Green Squares</string>
 
 </resources>
