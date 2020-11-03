@@ -15,7 +15,7 @@
         android:padding="20dp"
         app:srcCompat="@drawable/checkersboard" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -25,40 +25,35 @@
 
         <EditText
             android:id="@+id/player1"
+            android:layout_above="@id/player2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
             android:ems="10"
             android:hint="@string/player1"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:paddingTop="30dp" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/player2"
+            android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="3"
             android:ems="10"
             android:hint="@string/player2"
             android:importantForAutofill="no"
             android:inputType="textPersonName" />
 
-        <FrameLayout
+        <Button
+            android:layout_below="@id/player2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3">
+            android:layout_gravity="bottom"
+            android:onClick="onStartCheckers"
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onStartCheckers"
-                android:text="@string/startButton" />
-        </FrameLayout>
+            android:text="@string/startButton" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
