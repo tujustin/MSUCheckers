@@ -81,6 +81,8 @@ public class CheckersView extends View {
 
         setId(R.id.checkersView);
 
+        a.recycle();
+
 
     }
 
