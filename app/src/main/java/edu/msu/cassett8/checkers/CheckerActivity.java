@@ -12,11 +12,9 @@ public class CheckerActivity extends AppCompatActivity {
 
     String p1 = null;
     String p2 = null;
-    int winner = 1;
     private CheckersView getCheckerView() {
         return this.findViewById(R.id.checkersView);
     }
-    TextView playerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

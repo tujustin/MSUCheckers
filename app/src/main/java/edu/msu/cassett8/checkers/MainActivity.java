@@ -64,20 +64,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Get's the player1's name and passes it player class
-     * @return playerOne
-     */
-    public static String getPlayerOne() {
-        return playerOne;
-    }
-
-    /**
-     * Get's the player2's name and passes it player class
-     * @return playerTwo
-     */
-    public static String getPlayerTwo() {
-        return playerTwo;
-    }
-
 }

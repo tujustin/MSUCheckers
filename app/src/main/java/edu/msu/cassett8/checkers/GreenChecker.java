@@ -19,13 +19,6 @@ public class GreenChecker extends CheckerPiece {
     }
 
     @Override
-    public void AcceptVisitor(CheckerVisitor Visitor)
-    {
-        Visitor.visitedGreen();
-    }
-
-
-    @Override
     public void draw(Canvas canvas, int marginX, int marginY,
                      int puzzleSize, float scaleFactor) {
 

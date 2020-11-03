@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import androidx.fragment.app.DialogFragment;
 import java.util.Random;
 
 import static java.lang.String.valueOf;
@@ -168,11 +167,6 @@ public class CheckerBoard {
 
 
 
-    public ArrayList<GreenChecker> getGreenPieces() {
-        return greenPieces;
-    }
-
-
 
     Context mContext;
     public float leftEdge = 0.07f;
@@ -217,7 +211,7 @@ public class CheckerBoard {
 
         if(!initialized)
         {
-            setInitialPos(wid, hit);
+            setInitialPos();
             initialized=true;
         }
 
@@ -662,14 +656,13 @@ public class CheckerBoard {
         mCheckersView.invalidate();
 
     }
-    public void setInitialPos(int wid, int hit)
+    public void setInitialPos()
     {
         //code for setting initial positions of checkers
 
         //first 12 are white and first 12 are green. May also be other way around. I dont know. x and y range from 0-.95f.
 
         //example of setting their locations (randomly)
-        Random rand = new Random();//remove
         float whiteShift = 0;
         float greenShift = 0;
         int whiteCount = 0;

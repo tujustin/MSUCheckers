@@ -3,11 +3,7 @@ package edu.msu.cassett8.checkers;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,9 +13,6 @@ import android.view.View;
  */
 public class CheckersView extends View {
 
-    private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;
     private CheckerBoard board;
 
 

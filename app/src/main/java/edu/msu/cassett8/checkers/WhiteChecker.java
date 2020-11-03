@@ -29,11 +29,6 @@ public class WhiteChecker extends CheckerPiece {
         super.draw(canvas, marginX, marginY, puzzleSize, scaleFactor);
     }
 
-    @Override
-    public void AcceptVisitor(CheckerVisitor Visitor)
-    {
-        Visitor.visitedWhite();
-    }
 
 
 
