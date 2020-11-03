@@ -46,7 +46,7 @@ public class CheckerActivity extends AppCompatActivity {
         else {
             playersTurn = p2;
         }
-        String msg = getString(R.string.turn) + " " + playersTurn + " " + getString(R.string.turnC);
+        String msg = getString(R.string.turn) + " " + playersTurn + "'s " + getString(R.string.turnC);
         textView.setText(msg);
 
 
@@ -62,9 +62,6 @@ public class CheckerActivity extends AppCompatActivity {
     public void onStartGame(View view){
         String msg = getString(R.string.controlsDesc) + " " + p1 + " " + getString(R.string.greenPlayer) + " " + p2 + " " + getString(R.string.whitePlayer) + " " + p1 + " " + getString(R.string.first);
         TextView textView = (TextView) findViewById(R.id.turnText);
-        String playersTurn = null;
-        String msg2 = getString(R.string.turn) + " " + p1 + " " + getString(R.string.turnC);
-        textView.setText(msg2);
         new AlertDialog.Builder(view.getContext())
                 .setTitle(R.string.instructions)
                 .setMessage(msg)
@@ -96,7 +93,7 @@ public class CheckerActivity extends AppCompatActivity {
             else {
                 playersTurn = p2;
             }
-            String msg = getString(R.string.turn) + " " + playersTurn + " " + getString(R.string.turnC);
+            String msg = getString(R.string.turn) + " " + playersTurn + "'s " + getString(R.string.turnC);
             textView.setText(msg);
         }
     }
