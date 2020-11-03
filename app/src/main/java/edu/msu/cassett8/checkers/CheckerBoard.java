@@ -57,6 +57,10 @@ public class CheckerBoard {
         int [] wids = new int[whitePieces.size() * 2];
         float [] glocations = new float[greenPieces.size() * 2];
         int [] gids = new int[greenPieces.size()* 2];
+        float [] availLocs = new float[availableMoves.size()*2];
+        float [] jumpedPLoc = new float[availableMoves.size()*2];
+        int [] jumpedPid = new int[availableMoves.size()*2];
+        int [] attachedPid = new int[availableMoves.size()*2];
 
         for(int i=0;  i<whitePieces.size(); i++) {
             CheckerPiece piece = whitePieces.get(i);
@@ -72,11 +76,38 @@ public class CheckerBoard {
             gids[i*2] = piece.getID();
             gids[i*2+1] =  piece.getKing() ? 1 : 0;
         }
+        for(int i=0; i< availableMoves.size(); i++)
+        {
+            AvailableMove m = availableMoves.get(i);
+            CheckerPiece j = m.getJumpedPiece();
+            CheckerPiece attached = m.getPiece();
+
+            attachedPid[i*2] = attached.getID();
+            availLocs[i*2] = m.getX();
+            availLocs[i*2+1] = m.getY();
+            if(j != null)
+            {
+                jumpedPid[i*2] = j.getID();
+                jumpedPid[i*2+1] =  j.getKing() ? 1 : 0;
+                jumpedPLoc[i*2] = j.getX();
+                jumpedPLoc[i*2+1] = j.getY();
+            }
+            else {
+                jumpedPid[i*2] = -1;
+                jumpedPid[i*2+1] =  -1;
+                jumpedPLoc[i*2] = -1;
+                jumpedPLoc[i*2+1] = -1;
+            }
+        }
 
         bundle.putFloatArray(White_Location, wlocations);
         bundle.putIntArray(White_IDs,  wids);
         bundle.putFloatArray(Green_Location, glocations);
         bundle.putIntArray(Green_IDs,  gids);
+        bundle.putFloatArray("availLoc", availLocs);
+        bundle.putFloatArray("jloc", jumpedPLoc);
+        bundle.putIntArray("jid", jumpedPid);
+        bundle.putIntArray("attached", attachedPid);
         bundle.putInt("turn", turn);
         bundle.putInt("winner", winner);
         bundle.putBoolean("gameState", isEnd);
@@ -135,8 +166,13 @@ public class CheckerBoard {
             float[] glocations = bundle.getFloatArray(Green_Location);
             int[] gids = bundle.getIntArray(Green_IDs);
 
+            float[] Jlocations = bundle.getFloatArray("jloc");
+            float[] availLoc = bundle.getFloatArray("availLoc");
+            int[] Jids = bundle.getIntArray("jid");
+            int[] attachedID = bundle.getIntArray("attached");
             ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
             ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
+            ArrayList<AvailableMove> moves = new ArrayList<AvailableMove>();
 
             if ((gids != null) && (wids !=null)) {
                 for (int i = 0; i < (gids.length/2); i++) {
@@ -158,6 +194,42 @@ public class CheckerBoard {
                 this.whitePieces = whitePieces;
 
                 initialized=true;
+            }
+            if(availLoc != null)
+            {
+                for (int i = 0; i < (availLoc.length/2); i++) {
+                    CheckerPiece p = null;
+                    int id = attachedID[i*2];
+                    if(turn == 1){
+                        for (GreenChecker j: greenPieces)
+                        {
+                            if(j.getID() == id)
+                            {
+                                p = j;
+                            }
+                        }
+                    }
+                    else {
+                        for (WhiteChecker j: whitePieces)
+                        {
+                            if(j.getID() == id)
+                            {
+                                p = j;
+                            }
+                        }
+                    }
+                    CheckerPiece jumped = null;
+                    if(Jids[i*2] !=-1)
+                    {
+                        jumped = new CheckerPiece(context, Jids[i*2]);
+                        jumped.SetKing(Jids[i*2+1]);
+                        jumped.setCords(Jlocations[i*2], Jlocations[i*2+1]);
+                        jumpedPiece = jumped;
+                    }
+                    AvailableMove n = new AvailableMove(availLoc[i*2], availLoc[i*2+1], p, jumped);
+                    moves.add(n);
+                }
+                availableMoves = moves;
             }
 
 
