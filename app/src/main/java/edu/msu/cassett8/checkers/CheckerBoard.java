@@ -6,7 +6,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +39,18 @@ public class CheckerBoard {
     private int turn = 1;
     private boolean selected = false;
     private CheckerPiece jumpedPiece;
+    private float touchedPieceX;
+    private float touchedPieceY;
+    private float touchedPieceWidth;
+    private float touchedPieceHeight;
+
+
+    Context mContext;
+    public float leftEdge = 0.07f;
+    public float rightEdge = 0.9f;
+    public float diff = 0.05f;
+    public float topEdge = 0.07f;
+    public float bottomEdge = 0.9f;
 
     private ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
     private ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
@@ -62,6 +77,7 @@ public class CheckerBoard {
         float [] jumpedPLoc = new float[availableMoves.size()*2];
         int [] jumpedPid = new int[availableMoves.size()*2];
         int [] attachedPid = new int[availableMoves.size()*2];
+
 
         for(int i=0;  i<whitePieces.size(); i++) {
             CheckerPiece piece = whitePieces.get(i);
@@ -116,8 +132,14 @@ public class CheckerBoard {
         bundle.putString("p2", playerTwo);
         bundle.putBoolean("went", went);
         bundle.putString("former", valueOf(formerID));
+        bundle.putFloat("touchedX",touchedPieceX);
+        bundle.putFloat("touchedY",touchedPieceY);
+        bundle.putFloat("touchedH",touchedPieceHeight);
+        bundle.putFloat("touchedW",touchedPieceWidth);
+
 
         bundle.putBoolean("select", selected);
+
 
     }
     public int getWinner()
@@ -151,6 +173,10 @@ public class CheckerBoard {
                 formerID = Integer.parseInt(form);
             }
             selected = bundle.getBoolean("select");
+            touchedPieceWidth = bundle.getFloat(("touchedW"));
+            touchedPieceHeight = bundle.getFloat(("touchedH"));
+            touchedPieceX = bundle.getFloat(("touchedX"));
+            touchedPieceY = bundle.getFloat(("touchedY"));
             String temp = bundle.getString("p1");
             if(temp != null){ playerOne = temp;}
             temp = bundle.getString("p2");
@@ -170,6 +196,9 @@ public class CheckerBoard {
             float[] glocations = bundle.getFloatArray(Green_Location);
             int[] gids = bundle.getIntArray(Green_IDs);
 
+            int[] tid = bundle.getIntArray("touchedID");
+            float[] tlocations = bundle.getFloatArray("touchedPiece");
+
             float[] Jlocations = bundle.getFloatArray("jloc");
             float[] availLoc = bundle.getFloatArray("availLoc");
             int[] Jids = bundle.getIntArray("jid");
@@ -177,6 +206,7 @@ public class CheckerBoard {
             ArrayList<WhiteChecker> whitePieces = new ArrayList<WhiteChecker>();
             ArrayList<GreenChecker> greenPieces = new ArrayList<GreenChecker>();
             ArrayList<AvailableMove> moves = new ArrayList<AvailableMove>();
+
 
             if ((gids != null) && (wids !=null)) {
                 for (int i = 0; i < (gids.length/2); i++) {
@@ -230,6 +260,7 @@ public class CheckerBoard {
                         jumped.setCords(Jlocations[i*2], Jlocations[i*2+1]);
                         jumpedPiece = jumped;
                     }
+
                     AvailableMove n = new AvailableMove(availLoc[i*2], availLoc[i*2+1], p, jumped);
                     moves.add(n);
                 }
@@ -244,12 +275,7 @@ public class CheckerBoard {
 
 
 
-    Context mContext;
-    public float leftEdge = 0.07f;
-    public float rightEdge = 0.9f;
-    public float diff = 0.05f;
-    public float topEdge = 0.07f;
-    public float bottomEdge = 0.9f;
+
 
     /**
      * Completed puzzle bitmap
@@ -318,7 +344,29 @@ public class CheckerBoard {
         canvas.drawBitmap(boardImage, 0, 0, null);
         canvas.restore();
 
-        
+        if (selected) {
+            canvas.save();
+            // Convert x,y to pixels and add the margin, then draw
+            canvas.translate(marginX + touchedPieceX * puzzleSize,
+                    marginY + touchedPieceY * puzzleSize);
+
+            // Scale it to the right size
+            canvas.scale(scaleFactor/1.5f, scaleFactor/1.5f);
+
+            // This magic code makes the center of the piece at 0, 0
+            canvas.translate(touchedPieceWidth / 2f, -touchedPieceHeight / 2f);
+
+            float squareSize = touchedPieceHeight;
+            Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            linePaint.setColor(Color.YELLOW);
+            linePaint.setStrokeWidth(3);
+
+            canvas.drawRect(touchedPieceX -squareSize, touchedPieceY, touchedPieceX,
+                    touchedPieceY +squareSize, linePaint);
+            canvas.restore();
+
+        }
+
 
         //draw all green checker pieces
         for(CheckerPiece piece : greenPieces) {
@@ -387,6 +435,7 @@ public class CheckerBoard {
 
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
+
         if(turn == 2) {
 
 
@@ -397,8 +446,9 @@ public class CheckerBoard {
                         if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                             // We hit a piece!
                             findDoubles(whitePieces.get(p), 0);
+                            setTouchedPiece(whitePieces.get(p));
                             selected = true;
-                            //whitePieces.remove(p);
+
                             return true;
                         }
                     }
@@ -407,7 +457,7 @@ public class CheckerBoard {
                     if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                         // We hit a piece!
                         findAvailableMoves(whitePieces.get(p), 0);
-                        //whitePieces.remove(p);
+                        setTouchedPiece(whitePieces.get(p));
                         selected = true;
                         if(jumpedPiece!=null) {
                             formerID = p;
@@ -427,6 +477,7 @@ public class CheckerBoard {
                         if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                             // We hit a piece!
                             findDoubles(greenPieces.get(p), 1);
+                            setTouchedPiece(greenPieces.get(p));
                             selected = true;
                             return true;
                         }
@@ -436,6 +487,7 @@ public class CheckerBoard {
                     if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                         // We hit a piece!
                         findAvailableMoves(greenPieces.get(p), 1);
+                        setTouchedPiece(greenPieces.get(p));
                         selected = true;
                         if(jumpedPiece!=null) {
                             formerID = p;
@@ -530,6 +582,12 @@ public class CheckerBoard {
         }
         return false;
 
+    }
+    public void setTouchedPiece(CheckerPiece piece) {
+        touchedPieceX = piece.getX();
+        touchedPieceY = piece.getY();
+        touchedPieceHeight = piece.getHeight();
+        touchedPieceWidth = piece.getWidth();
     }
 
     public boolean isLeftEdge(float x) {
