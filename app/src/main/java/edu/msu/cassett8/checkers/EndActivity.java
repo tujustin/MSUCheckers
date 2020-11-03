@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 public class EndActivity extends AppCompatActivity {
 
@@ -33,16 +31,22 @@ public class EndActivity extends AppCompatActivity {
             winner = bundle.getInt("winner");
         }
 
+        String isWinner = getString(R.string.isWinner);
+        String isLoser = getString(R.string.isLoser);
+        String winmsg;
+        String losemsg;
         if(winner == 2)
         {
-            playerWinner.setText(pTwo + " is the winner!");
-            playerLoser.setText(pOne + " is the loser!");
+            winmsg = pTwo + " " +isWinner;
+            losemsg = pOne + " " + isLoser;
         }
         else
         {
-            playerWinner.setText(pOne + " is the winner!");
-            playerLoser.setText(pTwo + " is the loser!");
+            winmsg = pOne + " " +isWinner;
+            losemsg = pTwo + " " + isLoser;
         }
+        playerWinner.setText(winmsg);
+        playerLoser.setText(losemsg);
 
     }
 

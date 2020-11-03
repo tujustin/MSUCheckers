@@ -17,12 +17,12 @@
     <string name="first"> goes first. Select done to end turn or resign to forfeit</string>
     <string name="instructions">Instructions</string>
     <string name="player1Win">Has Won! Press the Done Button to Continue</string>
-    <string name="ok">Ok</string>
-    <string name="cancel">cancel</string>
     <string name="endGame">Game Over</string>
     <string name="nothing">No Player Names</string>
     <string name="emptytext">Empty player names. Please enter valid player names.</string>
     <string name="playeroneempty">Player One needs an input. Please enter a player name.</string>
     <string name="playertwoempty">Player two needs an input. Please enter a player name.</string>
+    <string name="isWinner"> is the winner!</string>
+    <string name="isLoser"> is the loser!</string>
 
 </resources>

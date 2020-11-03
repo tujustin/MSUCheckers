@@ -27,19 +27,11 @@
         android:text="@string/loser" />
 
     <Button
-        android:id="@+id/newGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight=".1"
         android:onClick="onRestartGame"
         android:text="@string/newGame" />
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight=".5">
-
-    </FrameLayout>
 
 </LinearLayout>

@@ -9,7 +9,7 @@
     tools:context=".EndActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -33,19 +33,12 @@
             android:text="@string/loser" />
 
         <Button
-            android:id="@+id/newGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:onClick="onRestartGame"
             android:text="@string/newGame" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>

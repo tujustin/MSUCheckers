@@ -24,7 +24,13 @@ public class CheckersView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        performClick();
         return board.onTouchEvent(this, event);
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
     }
 
     public CheckersView(Context context, AttributeSet attrs) {
