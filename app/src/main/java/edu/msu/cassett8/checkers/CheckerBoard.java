@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import androidx.fragment.app.DialogFragment;
 import java.util.Random;
 
+import static java.lang.String.valueOf;
+
 public class CheckerBoard {
 
     boolean initialized = false;
@@ -82,6 +84,7 @@ public class CheckerBoard {
         bundle.putString("p1", playerOne);
         bundle.putString("p2", playerTwo);
         bundle.putBoolean("went", went);
+        bundle.putString("former", valueOf(formerID));
 
 
     }
@@ -107,6 +110,11 @@ public class CheckerBoard {
     public void loadInstanceState(Bundle bundle, Context context) {
 
         if(bundle!=null) {
+            String form = bundle.getString("former");
+            if(form!=null)
+            {
+                formerID = Integer.parseInt(form);
+            }
             String temp = bundle.getString("p1");
             if(temp != null){ playerOne = temp;}
             temp = bundle.getString("p2");
@@ -312,13 +320,12 @@ public class CheckerBoard {
 
             for (int p = whitePieces.size() - 1; p >= 0; p--) {
                 if(went){
-                    if(p==formerID && jumpedPiece !=null)
+                    if(p==formerID)
                     {
                         if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                             // We hit a piece!
                             findDoubles(whitePieces.get(p), 0);
                             //whitePieces.remove(p);
-                            p=-1;
                             return true;
                         }
                     }
@@ -328,7 +335,9 @@ public class CheckerBoard {
                         // We hit a piece!
                         findAvailableMoves(whitePieces.get(p), 0);
                         //whitePieces.remove(p);
-                        formerID=p;
+                        if(jumpedPiece!=null) {
+                            formerID = p;
+                        }
                         return true;
                     }
                 }
@@ -339,13 +348,11 @@ public class CheckerBoard {
 
             for (int p = greenPieces.size() - 1; p >= 0; p--) {
                 if(went){
-                    CheckerPiece j = jumpedPiece;
-                    if(p==formerID && j != null)
+                    if(p==formerID)
                     {
                         if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                             // We hit a piece!
                             findDoubles(greenPieces.get(p), 1);
-                            p=-1;
                             return true;
                         }
                     }
@@ -354,7 +361,9 @@ public class CheckerBoard {
                     if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
                         // We hit a piece!
                         findAvailableMoves(greenPieces.get(p), 1);
-                        formerID=p;
+                        if(jumpedPiece!=null) {
+                            formerID = p;
+                        }
                         return true;
                     }
                 }
@@ -426,8 +435,11 @@ public class CheckerBoard {
                     availableMoves.remove(p);
                 }
 
+                if(went)
+                {
+                    formerID=-1;
+                }
                 went=true;
-
                 mCheckersView.invalidate();
                 return true;
 
