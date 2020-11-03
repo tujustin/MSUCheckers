@@ -21,6 +21,7 @@ public class CheckerBoard {
     final static float SCALE_IN_VIEW = .95f;
 
     private boolean went = false;
+    int formerID = -1;
     private int puzzleSize;
     private int marginX;
     private int marginY;
@@ -95,6 +96,7 @@ public class CheckerBoard {
     public void changeTurn()
     {
         if (turn == 1) { turn = 2;} else { turn = 1;}
+        jumpedPiece = null;
         went = false;
 
     }
@@ -306,33 +308,55 @@ public class CheckerBoard {
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
         if(turn == 2) {
-            if(went) {
 
-                return false;
-            }
 
             for (int p = whitePieces.size() - 1; p >= 0; p--) {
-                if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
-                    // We hit a piece!
-                    findAvailableMoves(whitePieces.get(p), 0);
-                    //whitePieces.remove(p);
-                    return true;
+                if(went){
+                    if(p==formerID && jumpedPiece !=null)
+                    {
+                        if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                            // We hit a piece!
+                            findDoubles(whitePieces.get(p), 0);
+                            //whitePieces.remove(p);
+                            p=-1;
+                            return true;
+                        }
+                    }
+                }
+                else {
+                    if (whitePieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                        // We hit a piece!
+                        findAvailableMoves(whitePieces.get(p), 0);
+                        //whitePieces.remove(p);
+                        formerID=p;
+                        return true;
+                    }
                 }
             }
         }
 
         else {
 
-            if(went)
-            {
-                return false;
-            }
-
             for (int p = greenPieces.size() - 1; p >= 0; p--) {
-                if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
-                    // We hit a piece!
-                    findAvailableMoves(greenPieces.get(p), 1);
-                    return true;
+                if(went){
+                    CheckerPiece j = jumpedPiece;
+                    if(p==formerID && j != null)
+                    {
+                        if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                            // We hit a piece!
+                            findDoubles(greenPieces.get(p), 1);
+                            p=-1;
+                            return true;
+                        }
+                    }
+                }
+                else {
+                    if (greenPieces.get(p).hit(x, y, puzzleSize, scaleFactor)) {
+                        // We hit a piece!
+                        findAvailableMoves(greenPieces.get(p), 1);
+                        formerID=p;
+                        return true;
+                    }
                 }
             }
         }
@@ -555,13 +579,75 @@ public class CheckerBoard {
         for(int i =  availableMoves.size() - 1; i >= 0; i-- ) {
             AvailableMove move = availableMoves.get(i);
             if (isGreen(move.getX(),move.getY()) || (isWhite(move.getX(),move.getY())) || move.getX() < (leftEdge - .05f) ||
-                move.getX() > (rightEdge + .05f) || move.getY() < (topEdge - .05f)  || move.getY() > bottomEdge + .05f) {
+                    move.getX() > (rightEdge + .05f) || move.getY() < (topEdge - .05f)  || move.getY() > bottomEdge + .05f) {
                 availableMoves.remove(i);
             }
         }
         mCheckersView.invalidate();
     }
 
+    public void findDoubles(CheckerPiece piece , int type) {
+        availableMoves.clear();
+        if (type == 0) {
+
+            if (piece.getKing()) {
+                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+
+            } else {
+                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
+                }
+            }
+        }
+        else if (type == 1) {
+            if (piece.getKing()) {
+                if (isJumpable(piece.getX() + .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() + .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() - .125f, piece.getY() + .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() + .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+
+            }
+            else{
+                if (isJumpable(piece.getX() - .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() - .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+                if (isJumpable(piece.getX() + .125f, piece.getY() - .125f, type)) {
+                    availableMoves.add(new AvailableMove(piece.getX() + .25f, piece.getY() - .25f, piece, jumpedPiece));
+                }
+            }
+        }
+        for(int i =  availableMoves.size() - 1; i >= 0; i-- ) {
+            AvailableMove move = availableMoves.get(i);
+            if (isGreen(move.getX(),move.getY()) || (isWhite(move.getX(),move.getY())) || move.getX() < (leftEdge - .05f) ||
+                    move.getX() > (rightEdge + .05f) || move.getY() < (topEdge - .05f)  || move.getY() > bottomEdge + .05f) {
+                availableMoves.remove(i);
+            }
+        }
+        mCheckersView.invalidate();
+
+    }
     public void setInitialPos(int wid, int hit)
     {
         //code for setting initial positions of checkers
