@@ -14,7 +14,7 @@
     <string name="whitePlayer"> is White. </string>
     <string name="turn">It is Player</string>
     <string name="turnC">turn</string>
-    <string name="first"> goes first. Select done end turn or resign to forfeit</string>
+    <string name="first"> goes first. Select done to end turn or resign to forfeit</string>
     <string name="instructions">Instructions</string>
     <string name="player1Win">Has Won! Press the Done Button to Continue</string>
     <string name="ok">Ok</string>
